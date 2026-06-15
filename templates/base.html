@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conexão entre Irmãos - Sistema de Estoque</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .nav-tabs a { text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="brand">
+            <img src="{{ url_for('static', filename='img/logo-conexao-entre-irmaos.jpg') }}" alt="Logo Conexão Entre Irmãos" onerror="this.style.display='none'">
+            <div>
+                <span class="brand-kicker">Sistema de Estoque</span>
+                <h1>Conexão entre Irmãos</h1>
+            </div>
+        </div>
+
+        <nav class="nav-tabs" aria-label="Navegação principal">
+            <button id="nav-painel" class="{% if request.path == '/painel' or request.path == '/' %}active{% endif %}" type="button" onclick="window.location.href='{{ url_for('painel') }}'">Painel</button>
+            <button id="nav-entrada" class="{% if request.path == '/entrada' %}active{% endif %}" type="button" onclick="window.location.href='{{ url_for('entrada') }}'">Entrada</button>
+            <button id="nav-baixa" class="{% if request.path == '/baixa' %}active{% endif %}" type="button" onclick="window.location.href='{{ url_for('baixa') }}'">Baixa</button>
+            <button id="nav-historico" class="{% if request.path == '/historico' %}active{% endif %}" type="button" onclick="window.location.href='/historico'">Histórico</button>
+        </nav>
+    </header>
+
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

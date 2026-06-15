@@ -1,0 +1,87 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<section id="secao-painel" class="content-section active-section">
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">Visão geral</span>
+            <h2>Status de armazenamento</h2>
+        </div>
+        <span class="status-pill">Atualizado hoje</span>
+    </div>
+
+    <div class="cards-container summary-cards">
+        <article class="metric-card">
+            <div class="metric-copy">
+                <span>Total Instituto</span>
+                <strong>{{ totais.total_instituto }}</strong>
+                <small>Itens disponíveis para atendimento</small>
+            </div>
+            <div class="summary-icon" aria-hidden="true">
+                <span>✓</span>
+            </div>
+        </article>
+
+        <article class="metric-card">
+            <div class="metric-copy">
+                <span>Total Bazar</span>
+                <strong>{{ totais.total_bazar }}</strong>
+                <small>Itens separados para venda solidária</small>
+            </div>
+            <div class="summary-icon {% if totais.total_bazar == 0 %}is-empty{% endif %}" aria-hidden="true">
+                <span>!</span>
+            </div>
+        </article>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <span class="eyebrow">Cadastro</span>
+                <h2>Produtos cadastrados</h2>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="dash_table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Local</th>
+                        <th>Quantidade</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for produto in produtos %}
+                    <tr>
+                        <td>#{{ '%03d' % produto.ID|int }}</td>
+                        <td>{{ produto.Nome }}</td>
+                        <td>
+                            <span class="tag {% if produto.Categoria == 'roupas' %}tag-alt{% endif %}">{{ produto.Categoria|capitalize }}</span>
+                        </td>
+                        <td>{{ produto.Local|capitalize }}</td>
+                        <td>{{ produto.Quantidade }}</td>
+                        <td>
+                            {% if produto.Quantidade >= 10 %}
+                                <span class="status-badge status-ok">✓ Estável</span>
+                            {% elif produto.Quantidade > 0 %}
+                                <span class="status-badge status-attention">! Atenção</span>
+                            {% else %}
+                                <span class="status-badge status-empty">• Sem itens</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not produtos %}
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Nenhum produto cadastrado com estoque disponível.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

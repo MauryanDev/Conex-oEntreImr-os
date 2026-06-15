@@ -1,0 +1,78 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="section-heading">
+    <div>
+        <span class="eyebrow">Administração</span>
+        <h2>Histórico de movimentações</h2>
+    </div>
+</div>
+
+<div class="panel" style="margin-bottom: 24px;">
+    <form method="GET" action="/historico" style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
+        <div class="input-group" style="min-width:180px;">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" name="tipo">
+                <option value="">Todos</option>
+                <option value="ENTRADA" {% if filtro_tipo == "ENTRADA" %}selected{% endif %}>Entradas</option>
+                <option value="SAIDA"   {% if filtro_tipo == "SAIDA"   %}selected{% endif %}>Saídas</option>
+            </select>
+        </div>
+        <div class="input-group" style="min-width:180px;">
+            <label for="mes">Mês / Ano</label>
+            <input type="month" id="mes" name="mes"
+                   value="{% if filtro_mes %}{{ filtro_mes[3:] }}-{{ filtro_mes[:2] }}{% endif %}">
+        </div>
+        <button type="submit" class="btn-submit" style="margin-top:0;">Filtrar</button>
+        <a href="/historico" class="btn-danger" style="text-decoration:none; display:inline-flex; align-items:center; padding:13px 22px; border-radius:14px; font-weight:700;">Limpar</a>
+    </form>
+</div>
+
+<div class="panel">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data / Hora</th>
+                    <th>Tipo</th>
+                    <th>Produto</th>
+                    <th>Categoria</th>
+                    <th>Local</th>
+                    <th>Quantidade</th>
+                    <th>Responsável</th>
+                    <th>Telefone</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if registros %}
+                    {% for r in registros %}
+                    <tr>
+                        <td>{{ r.Data_Hora }}</td>
+                        <td>
+                            {% if r.Tipo == "ENTRADA" %}
+                                <span class="status-badge status-ok">↑ Entrada</span>
+                            {% else %}
+                                <span class="status-badge status-attention">↓ Saída</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ r.Produto }}</td>
+                        <td><span class="tag">{{ r.Categoria }}</span></td>
+                        <td>{{ r.Local }}</td>
+                        <td>{{ r.Quantidade }}</td>
+                        <td>{{ r.Responsavel }}</td>
+                        <td>{{ r.Telefone }}</td>
+                        <td>{{ r.Observacao }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9" style="text-align:center; color:var(--muted); padding:32px;">
+                            Nenhuma movimentação encontrada.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<section id="secao-entrada" class="content-section active-section">
+    <div class="form-max-width">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">Doações</span>
+                <h2>Registrar entrada</h2>
+            </div>
+        </div>
+
+        <div class="panel form-container">
+            <form action="{{ url_for('entrada') }}" method="POST" class="donation-form">
+                <div class="form-row equal-cols">
+                    <div class="input-group">
+                        <label for="produto">Nome do produto</label>
+                        <input type="text" id="produto" name="produto" placeholder="Ex: Arroz, camiseta infantil..." required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="quantidade">Quantidade</label>
+                        <input type="number" id="quantidade" name="quantidade" value="1" min="1" required>
+                    </div>
+                </div>
+
+                <div class="form-row equal-cols">
+                    <div class="input-group">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="" disabled selected>Selecione uma categoria</option>
+                            <option value="alimentos">Alimentos</option>
+                            <option value="higiene">Higiene</option>
+                            <option value="limpeza">Limpeza</option>
+                            <option value="roupas">Roupas</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="local">Local de armazenamento</label>
+                        <select id="local" name="local" required>
+                            <option value="" disabled selected>Selecione um local</option>
+                            <option value="instituto">Estoque/Despensa do Instituto</option>
+                            <option value="bazar">Bazar</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="campos-alimentos" class="conditional-fields">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="quilos-litros">Quilos / Litros <span>opcional</span></label>
+                            <input type="text" id="quilos-litros" name="quilos_litros" placeholder="Ex: 5kg, 2L, pacote 1kg">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="campos-roupas" class="conditional-fields">
+                    <div class="form-row equal-cols">
+                        <div class="input-group">
+                            <label for="tamanho-roupa">Tamanho</label>
+                            <input type="text" id="tamanho-roupa" name="tamanho" placeholder="Ex: P, M, G, 38, infantil 6">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="peca-roupa">Peça de roupa</label>
+                            <input type="text" id="peca-roupa" name="peca" placeholder="Ex: Camiseta, calça, casaco">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Registrar entrada</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

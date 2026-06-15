@@ -1,0 +1,52 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<section id="secao-baixa" class="content-section active-section">
+    <div class="form-max-width">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">Saídas</span>
+                <h2>Dar baixa no estoque</h2>
+            </div>
+        </div>
+
+        <div class="panel form-container">
+            <div class="warning-banner">
+                Atenção: nome e telefone do responsável pela retirada são obrigatórios.
+            </div>
+
+            <form action="{{ url_for('baixa') }}" method="POST">
+                <div class="form-row equal-cols">
+                    <div class="input-group">
+                        <label for="nome-responsavel">Nome completo do responsável</label>
+                        <input type="text" id="nome-responsavel" name="responsavel" placeholder="Ex: João da Silva" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="telefone-contato">Telefone de contato</label>
+                        <input type="tel" id="telefone-contato" name="telefone" placeholder="Ex: 3299906556948" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="produto-baixa">Produto para baixa</label>
+                        <select id="produto-baixa" name="produto_id" required>
+                            <option value="" disabled selected>Selecione um produto</option>
+                            {% for p in produtos %}
+                            <option value="{{ p.ID }}">{{ p.Nome }} ({{ p.Local|capitalize }}) — Qtd: {{ p.Quantidade }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="quantidade-baixa">Quantidade a retirar</label>
+                        <input type="number" id="quantidade-baixa" name="quantidade" value="1" min="1" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-danger">Confirmar baixa</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
