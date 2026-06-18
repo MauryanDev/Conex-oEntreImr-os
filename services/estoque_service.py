@@ -34,6 +34,9 @@ def obter_produto(produto_id: int) -> dict | None:
 def listar_historico(filtro_tipo: str = "", filtro_mes: str = "") -> list[dict]:
     params = {}
     if filtro_tipo: params["tipo"] = filtro_tipo
-    if filtro_mes:  params["mes"]  = filtro_mes
+    if filtro_mes:  
+        ano, mes = filtro_mes.split("-")
+        params["mes"] = f"{mes}/{ano}"
+        
     resultado = get("listar_historico", params, usar_cache=False)
     return resultado if isinstance(resultado, list) else []
