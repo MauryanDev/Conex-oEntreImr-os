@@ -6,7 +6,15 @@ def inicializar_sheets() -> None:
 
 def listar_estoque() -> list[dict]:
     resultado = get("listar_estoque")
-    return resultado if isinstance(resultado, list) else []
+    if isinstance(resultado, list):
+        for produto in resultado:
+            if "Quantidade" in produto:
+                try:
+                    produto["Quantidade"] = int(produto["Quantidade"])
+                except (ValueError, TypeError):
+                    produto["Quantidade"] = 0  
+        return resultado
+    return []
 
 def obter_totais() -> dict:
     resultado = get("obter_totais")
