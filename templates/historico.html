@@ -19,8 +19,7 @@
         </div>
         <div class="input-group" style="min-width:180px;">
             <label for="mes">Mês / Ano</label>
-            <input type="month" id="mes" name="mes"
-                   value="{% if filtro_mes %}{{ filtro_mes[3:] }}-{{ filtro_mes[:2] }}{% endif %}">
+            <input type="month" id="mes" name="mes" value="{{ filtro_mes }}">
         </div>
         <button type="submit" class="btn-submit" style="margin-top:0;">Filtrar</button>
         <a href="/historico" class="btn-danger" style="text-decoration:none; display:inline-flex; align-items:center; padding:13px 22px; border-radius:14px; font-weight:700;">Limpar</a>
