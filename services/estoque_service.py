@@ -10,9 +10,13 @@ def listar_estoque() -> list[dict]:
 
 def obter_totais() -> dict:
     resultado = get("obter_totais")
-    return resultado if isinstance(resultado, dict) else {
-        "total_instituto": 0, "total_bazar": 0, "total_geral": 0
-    }
+    if isinstance(resultado, dict):
+        return {
+            "total_instituto": resultado.get("total_instituto", 0),
+            "total_bazar": resultado.get("total_bazar", 0),
+            "total_geral": resultado.get("total_geral", 0)
+        }
+    return {"total_instituto": 0, "total_bazar": 0, "total_geral": 0}
 
 def obter_painel() -> tuple[dict, list]:
     """Busca totais e estoque em paralelo para o painel carregar mais rápido."""
