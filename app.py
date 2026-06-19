@@ -1,7 +1,8 @@
 ﻿from flask import Flask, render_template, request, redirect, url_for, flash
 from services.estoque_service import (
     inicializar_sheets, listar_estoque, obter_totais, obter_painel,
-    registrar_entrada, dar_baixa, listar_historico, listar_produtos_base
+    registrar_entrada, dar_baixa, listar_historico, listar_produtos_base,
+    listar_parceiros # <-- NOVA IMPORTAÇÃO
 )
 
 app = Flask(__name__)
@@ -37,11 +38,13 @@ def entrada():
     
     try:
         produtos_base = listar_produtos_base()
+        parceiros = listar_parceiros() # <-- BUSCANDO OS PARCEIROS
     except Exception as e:
         print(e)
         produtos_base = []
+        parceiros = []
         
-    return render_template("entrada.html", produtos_base=produtos_base)
+    return render_template("entrada.html", produtos_base=produtos_base, parceiros=parceiros)
 
 @app.route("/baixa", methods=["GET", "POST"])
 def baixa():
@@ -57,7 +60,13 @@ def baixa():
         return redirect(url_for("baixa"))
         
     produtos = listar_estoque()
-    return render_template("baixa.html", produtos=produtos)
+    try:
+        parceiros = listar_parceiros() # <-- BUSCANDO OS PARCEIROS
+    except Exception as e:
+        print(e)
+        parceiros = []
+        
+    return render_template("baixa.html", produtos=produtos, parceiros=parceiros)
 
 @app.route("/historico")
 def historico():
@@ -68,6 +77,7 @@ def historico():
                            registros=registros,
                            filtro_tipo=filtro_tipo,
                            filtro_mes=filtro_mes)
+
 @app.route("/produtos_base")
 def produtos_base():
     try:

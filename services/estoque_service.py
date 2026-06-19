@@ -60,3 +60,26 @@ def listar_produtos_base() -> list[dict]:
     """Busca o catálogo de produtos básicos cadastrados na nova aba do Sheets."""
     resultado = get("listar_produtos_base", params={}, usar_cache=True)
     return resultado if isinstance(resultado, list) else []
+
+def listar_parceiros():
+    """Busca a lista de parceiros cadastrados na aba 'Parceiros'"""
+    try:
+        dados = client.get("?acao=listar_parceiros")
+        if not dados:
+            return []
+            
+        # Pula o cabeçalho
+        linhas = dados[1:]
+        parceiros = []
+        for linha in linhas:
+            # Estrutura esperada: ID, Nome, Tipo
+            if len(linha) >= 3:
+                parceiros.append({
+                    "ID": linha[0],
+                    "Nome": linha[1],
+                    "Tipo": linha[2].strip().upper() # DOADOR, RECEBEDOR ou AMBOS
+                })
+        return parceiros
+    except Exception as e:
+        print(f"Erro ao listar parceiros: {e}")
+        return []

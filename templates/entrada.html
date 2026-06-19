@@ -50,18 +50,35 @@
                     </div>
                 </div>
 
+                <!-- ─── NOVO CAMPO SELECT: DOADOR / ORIGEM ─── -->
                 <div class="form-row">
                     <div class="input-group">
-                        <label for="doador">Doador / Origem <span>(Para o Balanço Social)</span></label>
-                        <input type="text" id="doador" name="doador" placeholder="Ex: Anônimo, Empresa X, João Silva" required>
+                        <label for="doador">Doador / Parceiro de Origem</label>
+                        <select id="doador" name="doador" required>
+                            <option value="" disabled selected>Selecione a instituição ou parceiro</option>
+                            
+                            <!-- Opções dinâmicas puxadas do Sheets -->
+                            {% if parceiros %}
+                                {% for parceiro in parceiros %}
+                                    {% if parceiro.Tipo in ['DOADOR', 'AMBOS'] %}
+                                        <option value="{{ parceiro.Nome }}">{{ parceiro.Nome }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            
+                            <!-- Opções padrão para não travar o sistema -->
+                            <option disabled>──────────</option>
+                            <option value="Pessoa Física (Avulso)">Pessoa Física (Avulso)</option>
+                            <option value="Doador Anônimo">Doador Anônimo</option>
+                        </select>
                     </div>
                 </div>
 
                 <div id="campos-alimentos" class="conditional-fields">
                     <div class="form-row">
                         <div class="input-group">
-                            <label for="quilos-litros">Quilos / Litros <span>opcional</span></label>
-                            <input type="text" id="quilos-litros" name="quilos_litros" placeholder="Ex: 5kg, 2L, pacote 1kg">
+                            <label for="quilos-litros">Quilos, Litros ou Descrição <span>opcional</span></label>
+                            <input type="text" id="quilos-litros" name="quilos_litros" placeholder="Ex: 5kg, 2L, sacola mista com pães">
                         </div>
                     </div>
                 </div>

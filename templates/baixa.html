@@ -16,24 +16,37 @@
 
             <form action="{{ url_for('baixa') }}" method="POST">
                 
+                <!-- ─── NOVO CAMPO SELECT: DESTINO / RECEBEDOR ─── -->
                 <div class="form-row equal-cols">
                     <div class="input-group">
-                        <label for="recebedor">Destino / Recebedor</label>
+                        <label for="recebedor">Instituição de Destino</label>
                         <select id="recebedor" name="recebedor" required>
-                            <option value="" disabled selected>Selecione o destino</option>
-                            <option value="Consumo Interno">Consumo Interno do Instituto</option>
-                            <option value="Família Assistida">Doação Externa (Famílias Assistidas)</option>
-                            <option value="Bazar">Venda no Bazar</option>
-                            <option value="Outro">Outro Destino</option>
+                            <option value="" disabled selected>Selecione a instituição</option>
+                            
+                            <!-- Opções dinâmicas puxadas do Sheets -->
+                            {% if parceiros %}
+                                {% for parceiro in parceiros %}
+                                    {% if parceiro.Tipo in ['RECEBEDOR', 'AMBOS'] %}
+                                        <option value="{{ parceiro.Nome }}">{{ parceiro.Nome }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            
+                            <!-- Opções padrão internas -->
+                            <option disabled>──────────</option>
+                            <option value="Consumo Interno">Consumo Interno (Instituto)</option>
+                            <option value="Venda no Bazar">Venda no Bazar</option>
+                            <option value="Família Assistida (Avulsa)">Família Assistida (Avulsa)</option>
                         </select>
                     </div>
 
                     <div class="input-group">
-                        <label for="observacao">Detalhes (Nome da Família / Obs)</label>
-                        <input type="text" id="observacao" name="observacao" placeholder="Ex: Família Souza, Evento X...">
+                        <label for="observacao">Detalhes (Obs)</label>
+                        <input type="text" id="observacao" name="observacao" placeholder="Ex: Nome da pessoa que retirou, evento...">
                     </div>
                 </div>
 
+                <!-- ─── CAMPOS DE ESTOQUE E RETIRADA ─── -->
                 <div class="form-row equal-cols">
                     <div class="input-group">
                         <label for="produto-baixa">Produto para baixa (Em Estoque)</label>
@@ -51,6 +64,7 @@
                     </div>
                 </div>
 
+                <!-- ─── TELEFONE ─── -->
                 <div class="form-row">
                     <div class="input-group">
                         <label for="telefone-contato">Telefone de contato <span>(opcional)</span></label>
