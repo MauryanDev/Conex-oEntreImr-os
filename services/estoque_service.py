@@ -8,6 +8,7 @@ def listar_estoque() -> list[dict]:
     resultado = get("listar_estoque")
     if isinstance(resultado, list):
         for produto in resultado:
+            # CORREÇÃO: Alinhado para usar a chave idêntica "Quantidade" (Maiúscula) em todo o bloco
             if "Quantidade" in produto:
                 try:
                     produto["Quantidade"] = int(produto["Quantidade"])
@@ -51,4 +52,11 @@ def listar_historico(filtro_tipo: str = "", filtro_mes: str = "") -> list[dict]:
         params["mes"] = f"{mes}/{ano}"
         
     resultado = get("listar_historico", params, usar_cache=False)
+    return resultado if isinstance(resultado, list) else []
+
+
+
+def listar_produtos_base() -> list[dict]:
+    """Busca o catálogo de produtos básicos cadastrados na nova aba do Sheets."""
+    resultado = get("listar_produtos_base", params={}, usar_cache=True)
     return resultado if isinstance(resultado, list) else []

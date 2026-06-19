@@ -11,29 +11,36 @@
 
         <div class="panel form-container">
             <div class="warning-banner">
-                Atenção: nome e telefone do responsável pela retirada são obrigatórios.
+                Atenção: O destino da saída é obrigatório para a prestação de contas do Balanço Social.
             </div>
 
             <form action="{{ url_for('baixa') }}" method="POST">
+                
                 <div class="form-row equal-cols">
                     <div class="input-group">
-                        <label for="nome-responsavel">Nome completo do responsável</label>
-                        <input type="text" id="nome-responsavel" name="responsavel" placeholder="Ex: João da Silva" required>
+                        <label for="recebedor">Destino / Recebedor</label>
+                        <select id="recebedor" name="recebedor" required>
+                            <option value="" disabled selected>Selecione o destino</option>
+                            <option value="Consumo Interno">Consumo Interno do Instituto</option>
+                            <option value="Família Assistida">Doação Externa (Famílias Assistidas)</option>
+                            <option value="Bazar">Venda no Bazar</option>
+                            <option value="Outro">Outro Destino</option>
+                        </select>
                     </div>
 
                     <div class="input-group">
-                        <label for="telefone-contato">Telefone de contato</label>
-                        <input type="tel" id="telefone-contato" name="telefone" placeholder="Ex: 3299906556948" required>
+                        <label for="observacao">Detalhes (Nome da Família / Obs)</label>
+                        <input type="text" id="observacao" name="observacao" placeholder="Ex: Família Souza, Evento X...">
                     </div>
                 </div>
 
-                <div class="form-row">
+                <div class="form-row equal-cols">
                     <div class="input-group">
-                        <label for="produto-baixa">Produto para baixa</label>
+                        <label for="produto-baixa">Produto para baixa (Em Estoque)</label>
                         <select id="produto-baixa" name="produto_id" required>
                             <option value="" disabled selected>Selecione um produto</option>
                             {% for p in produtos %}
-                            <option value="{{ p.ID }}">{{ p.Nome }} ({{ p.Local|capitalize }}) — Qtd: {{ p.Quantidade }}</option>
+                                <option value="{{ p.ID }}">{{ p.Nome }} (Disponível: {{ p.Quantidade }} no {{ p.Local }})</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -41,6 +48,13 @@
                     <div class="input-group">
                         <label for="quantidade-baixa">Quantidade a retirar</label>
                         <input type="number" id="quantidade-baixa" name="quantidade" value="1" min="1" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="telefone-contato">Telefone de contato <span>(opcional)</span></label>
+                        <input type="tel" id="telefone-contato" name="telefone" placeholder="Ex: 3299906556948">
                     </div>
                 </div>
 

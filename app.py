@@ -1,7 +1,7 @@
 ﻿from flask import Flask, render_template, request, redirect, url_for, flash
 from services.estoque_service import (
     inicializar_sheets, listar_estoque, obter_totais, obter_painel,
-    registrar_entrada, dar_baixa, listar_historico
+    registrar_entrada, dar_baixa, listar_historico, listar_produtos_base
 )
 
 app = Flask(__name__)
@@ -11,7 +11,7 @@ with app.app_context():
     try:
         inicializar_sheets()
     except Exception as e:
-        print("Erro ao inicializar sheets:", e)
+        print(e)
 
 @app.route("/")
 def index():
@@ -34,8 +34,14 @@ def entrada():
             flash(resultado.get("erro", "Erro ao registrar entrada."), "error")
             
         return redirect(url_for("entrada"))
+    
+    try:
+        produtos_base = listar_produtos_base()
+    except Exception as e:
+        print(e)
+        produtos_base = []
         
-    return render_template("entrada.html")
+    return render_template("entrada.html", produtos_base=produtos_base)
 
 @app.route("/baixa", methods=["GET", "POST"])
 def baixa():
@@ -62,6 +68,15 @@ def historico():
                            registros=registros,
                            filtro_tipo=filtro_tipo,
                            filtro_mes=filtro_mes)
+@app.route("/produtos_base")
+def produtos_base():
+    try:
+        produtos = listar_produtos_base()
+    except Exception as e:
+        print(f"Erro ao carregar catálogo: {e}")
+        produtos = []
+        
+    return render_template("produtos_base.html", produtos=produtos)
 
 if __name__ == "__main__":
     app.run(debug=True)

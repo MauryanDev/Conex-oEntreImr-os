@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="secao-catalogo" class="content-section active-section">
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">Catálogo Oficial</span>
+            <h2>Produtos Homologados</h2>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <p style="color: var(--muted); font-size: 0.9rem;">
+                Estes são os produtos base reconhecidos pelo Balanço Social. Para adicionar novos itens, contacte o administrador do sistema.
+            </p>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome do Produto</th>
+                        <th>Categoria</th>
+                        <th>Localização Padrão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if produtos %}
+                        {% for p in produtos %}
+                        <tr>
+                            <td style="color: var(--muted);">#{{ p.ID }}</td>
+                            <td><strong>{{ p.Nome_Padrao }}</strong></td>
+                            <td>
+                                <span class="tag">{{ p.Categoria | capitalize }}</span>
+                            </td>
+                            <td>{{ p.Local_Padrao | capitalize }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align:center; color:var(--muted); padding:32px;">
+                                Nenhum produto base encontrado no catálogo.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

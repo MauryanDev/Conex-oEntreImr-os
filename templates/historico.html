@@ -37,9 +37,9 @@
                     <th>Categoria</th>
                     <th>Local</th>
                     <th>Quantidade</th>
-                    <th>Responsável</th>
+                    <th>Doador / Recebedor</th>
                     <th>Telefone</th>
-                    <th>Observação</th>
+                    <th>Detalhes / Obs</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,7 +58,14 @@
                         <td><span class="tag">{{ r.Categoria }}</span></td>
                         <td>{{ r.Local }}</td>
                         <td>{{ r.Quantidade }}</td>
-                        <td>{{ r.Responsavel }}</td>
+                        <td>
+                            {% if r.Tipo == "ENTRADA" %}
+                                <small style="color:var(--muted); display:block; font-size:10px;">Origem:</small>
+                            {% else %}
+                                <small style="color:var(--muted); display:block; font-size:10px;">Destino:</small>
+                            {% endif %}
+                            {{ r.Responsavel }}
+                        </td>
                         <td>{{ r.Telefone }}</td>
                         <td>{{ r.Observacao }}</td>
                     </tr>
